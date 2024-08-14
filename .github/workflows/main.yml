@@ -79,13 +79,11 @@ jobs:
           version: 'latest'
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Set up kubeconfig and export to GitHub environment
+      - name: Set up kubeconfig
         run: |
-          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ${{ secrets.KUBECONFIG_PATH }}
-          echo "KUBECONFIG=${{ secrets.KUBECONFIG_PATH }}" >> $GITHUB_ENV
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
-          KUBECONFIG_PATH: ${{ secrets.KUBECONFIG_PATH }}
 
       - name: Get Kubernetes credentials
         run: |
@@ -96,5 +94,3 @@ jobs:
           kubectl apply -f mysql-deployment.yaml
           kubectl apply -f deployment.yaml
           kubectl get services
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
