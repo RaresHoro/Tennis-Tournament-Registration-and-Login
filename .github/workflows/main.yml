@@ -76,15 +76,18 @@ jobs:
 
       - name: Set up kubeconfig
         run: |
-          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ${{ secrets.KUBECONFIG_PATH }}
-          export KUBECONFIG=${{ secrets.KUBECONFIG_PATH }}
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > /tmp/kubeconfig
+          echo "KUBECONFIG=/tmp/kubeconfig" >> $GITHUB_ENV
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
-          KUBECONFIG_PATH: /tmp/kubeconfig
 
       - name: Get Kubernetes credentials
         run: |
           gcloud container clusters get-credentials ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.GCP_REGION }} --project ${{ secrets.GCP_PROJECT_ID }}
+        env:
+          CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
+          GCP_REGION: ${{ secrets.GCP_REGION }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Deploy to Kubernetes
         run: |
