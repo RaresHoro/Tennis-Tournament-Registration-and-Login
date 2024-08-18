@@ -51,7 +51,7 @@ jobs:
 
           # Install kubectl
           echo "Installing kubectl..."
-          gcloud components install kubectl --quiet
+          sudo apt-get install kubectl
 
           # Set up kubeconfig
           mkdir -p ~/.kube
