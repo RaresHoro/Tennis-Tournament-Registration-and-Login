@@ -53,6 +53,8 @@ jobs:
           echo "Installing kubectl..."
           sudo apt-get install kubectl
 
+          sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+
           # Set up kubeconfig
           mkdir -p ~/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
