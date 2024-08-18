@@ -39,7 +39,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up GCP credentials and kubeconfig, then deploy
+      - name: Set up GCP credentials and kubeconfig
         run: |
           # Decode and set up GCP credentials
           echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 -d > /tmp/gcp-key.json
@@ -48,6 +48,10 @@ jobs:
           gcloud config set compute/region ${{ secrets.GCP_REGION }}
           echo "Enabling Cloud Resource Manager API if not enabled..."
           gcloud services enable cloudresourcemanager.googleapis.com
+
+          # Install kubectl
+          echo "Installing kubectl..."
+          gcloud components install kubectl --quiet
 
           # Set up kubeconfig
           mkdir -p ~/.kube
