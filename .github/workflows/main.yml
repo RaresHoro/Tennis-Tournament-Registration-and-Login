@@ -79,4 +79,4 @@ jobs:
           kubectl apply -f deployment.yaml
           kubectl get services
         env:
-          KUBECONFIG: ~/.kube/config
+          KUBECONFIG: ~/.kube/config 
