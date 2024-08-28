@@ -7,7 +7,7 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   rules:
-  - host: rareshoro.site
+  - host: ##the name of the site
     http:
       paths:
       - path: /.well-known/acme-challenge/
