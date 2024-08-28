@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tennis-app-ingress
+  namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  rules:
+  - host: rareshoro.site
+    http:
+      paths:
+      - path: /.well-known/acme-challenge/
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: cm-acme-http-solver-747rd
+            port:
+              number: 8089
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tennis-registration-service
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - rareshoro.site
+    secretName: tennis-reg-tls-cert
