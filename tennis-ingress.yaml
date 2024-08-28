@@ -26,5 +26,5 @@ spec:
               number: 80
   tls:
   - hosts:
-    - rareshoro.site
+    - ##the name eof the site
     secretName: tennis-reg-tls-cert
