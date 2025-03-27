@@ -17,6 +17,20 @@ env:
   GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp-key.json
 
 jobs:
+  docker_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tennis-tournament-bun:latest .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/tennis-tournament-bun:latest
+
   terraform:
     runs-on: ubuntu-latest
     steps:
@@ -39,7 +53,7 @@ jobs:
 
   deploy_app:
     runs-on: ubuntu-latest
-    needs: terraform
+    needs: [docker_build, terraform]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
